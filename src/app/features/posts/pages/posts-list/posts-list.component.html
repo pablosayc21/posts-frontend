@@ -1,1 +1,6 @@
-<p>posts-list works!</p>
+
+@if(!loading()){
+@for (post of posts(); track $index){
+<app-post [post]="post" [postColor]="colorPost($index)"></app-post>
+}
+}

@@ -1,11 +1,11 @@
 import { Component, computed, OnInit, signal } from '@angular/core';
 import { Post } from '../../models/post.interface';
 import { CommonModule } from '@angular/common';
-
+import { PostComponent } from '../../components/post/post.component';
 
 @Component({
   selector: 'app-posts-list',
-  imports: [CommonModule],
+  imports: [CommonModule, PostComponent],
   templateUrl: './posts-list.component.html',
   styleUrl: './posts-list.component.scss'
 })
@@ -13,15 +13,17 @@ export class PostsListComponent implements OnInit {
 
   posts = signal<Post[]>([]);
   loading = signal<boolean>(true);
+  loaded = signal<boolean>(false);
 
   constructor(){}
 
   ngOnInit(): void {
-      
+    this.loadData();
   }
 
   private loadData(){
     this.loading.set(true);
+    this.loaded.set(false);
     setTimeout(() => {
       this.posts.set([
         {
@@ -48,11 +50,18 @@ export class PostsListComponent implements OnInit {
           createdAt: '2024-01-03',
           updatedAt: '2024-01-03',
         }
-      ]);
-
-      this.loading.set(false);
+      ],
+    );
+    
+    this.loading.set(false);
     }, 500);
     this.loading.set(false);
+    this.loaded.set(true);
+  }
+
+  colorPost(index: number) {
+    const colors = ['teal', 'green', 'yellow'];
+    return colors[index % colors.length];
   }
 
 }
