@@ -24,6 +24,7 @@ export class PostCommentsComponent {
   loaded = signal(false);
   isSubmitting = signal(false);
   resetForm = signal(false);
+  deletingComment = signal(false);
 
   private postId!: string;
 
@@ -69,6 +70,22 @@ export class PostCommentsComponent {
         setTimeout(() => this.resetForm.set(false));
       },
       error: () => {
+      }
+    });
+  }
+
+  deleteComment(commentId: string) {
+    this.deletingComment.set(true);
+    this.commentsService.deleteComment(commentId).subscribe({
+      next: () => {
+        this.comments.set(
+          this.comments().filter(comment => comment._id !== commentId)
+        );
+      },
+      error: () => {
+      },
+      complete: () => {
+        this.deletingComment.set(false);
       }
     });
   }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BaseApiService } from '../../../core/services/base-api.service';
-import { Observable, switchMap, throwError, catchError, tap } from 'rxjs';
+import { Observable, switchMap, throwError, catchError, tap, map } from 'rxjs';
 import { PostComment } from '../models/comment.interface';
 import { HttpParams } from '@angular/common/http';
 
@@ -39,5 +39,20 @@ export class CommentService extends BaseApiService {
       catchError(err => throwError(() => err))
     );
   }
+
+  deleteComment(postId: string): Observable<void> {
+      return this.delete<PostComment>(`${this.prefix}/${postId}`).pipe(
+        map(res => {
+          if (!res.success) {
+            throw res.message;
+          }
+          return;
+        }),
+        tap(),
+        catchError(err => throwError(() => err))
+      );
+    }
+  
+
 
 }

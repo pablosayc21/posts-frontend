@@ -16,7 +16,7 @@
             }
             <div class="flex flex-col gap-2">
                 @for (comment of comments(); track comment._id) {
-                <app-comment [comment]="comment"></app-comment>
+                <app-comment [comment]="comment" (delete)="deleteComment($event)" [deleting]="deletingComment()"></app-comment>
                 }
             </div>
         </div>
