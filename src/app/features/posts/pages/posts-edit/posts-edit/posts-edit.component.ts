@@ -16,7 +16,6 @@ export class PostsEditComponent implements OnInit {
   post = signal<Post | null>(null);
   isSubmitting = signal(false);
   loading = signal(false);
-  loaded = signal(false);
 
   private postId!: string;
 
@@ -37,10 +36,8 @@ export class PostsEditComponent implements OnInit {
       next: post => {
         this.post.set(post);
         this.loading.set(false);
-        this.loaded.set(true);
       } ,
       error: () => {
-        this.loaded.set(false);
         this.router.navigate(['']);
       } 
     });
