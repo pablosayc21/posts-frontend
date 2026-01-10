@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BaseApiService } from '../../../core/services/base-api.service';
-import { Observable, switchMap, throwError, catchError } from 'rxjs';
+import { Observable, switchMap, throwError, catchError, tap } from 'rxjs';
 import { PostComment } from '../models/comment.interface';
 import { HttpParams } from '@angular/common/http';
 
@@ -22,6 +22,20 @@ export class CommentService extends BaseApiService {
         }
         return [res.data ?? []];
       }),
+      tap(),
+      catchError(err => throwError(() => err))
+    );
+  }
+  
+  createPost(post: PostComment): Observable<PostComment> {
+    return this.post<PostComment>(this.prefix, post).pipe(
+      switchMap(res => {
+        if (!res.success) {
+          return throwError(() => res.message);
+        }
+        return [res.data!];
+      }),
+      tap(),
       catchError(err => throwError(() => err))
     );
   }
