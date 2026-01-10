@@ -2,11 +2,10 @@ import { Component, computed, OnInit, signal } from '@angular/core';
 import { Post } from '../../models/post.interface';
 import { CommonModule } from '@angular/common';
 import { PostComponent } from '../../components/post/post.component';
-import { HeaderComponent } from "../../../../shared/components/header/header.component";
 
 @Component({
   selector: 'app-posts-list',
-  imports: [CommonModule, PostComponent, HeaderComponent],
+  imports: [CommonModule, PostComponent],
   templateUrl: './posts-list.component.html',
   styleUrl: './posts-list.component.scss'
 })

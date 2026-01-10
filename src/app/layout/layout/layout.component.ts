@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from '../../shared/components/header/header.component';
+import { signal } from '@angular/core';
 
 @Component({
   selector: 'app-layout',
@@ -9,5 +10,17 @@ import { HeaderComponent } from '../../shared/components/header/header.component
   styleUrl: './layout.component.scss'
 })
 export class LayoutComponent {
+
+  showCreateButton = signal(true);
+
+  constructor(private route: ActivatedRoute) {
+    this.updateHeaderOptions();
+  }
+
+  updateHeaderOptions() {
+    this.route.firstChild?.data.subscribe(data => {
+      this.showCreateButton.set(data['showCreateButton'] ?? true);
+    });
+  }
 
 }

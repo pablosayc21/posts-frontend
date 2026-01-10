@@ -10,6 +10,9 @@ export const routes: Routes = [
                 loadComponent: () =>
                     import('./features/posts/pages/posts-list/posts-list.component')
                         .then(m => m.PostsListComponent),
+                data: {
+                    showCreateButton: true,
+                }
             }
         ],
     },
