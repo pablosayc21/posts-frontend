@@ -1,2 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
+
+.post-card-1 {
+    @apply relative bg-teal-50 rounded-2xl p-8 shadow-sm border border-teal-100;
+}
+
+.post-card-2 {
+    @apply relative bg-green-50 rounded-2xl p-8 shadow-sm border border-green-100;
+}
+
+.post-card-3 {
+    @apply relative bg-yellow-50 rounded-2xl p-8 shadow-sm border border-yellow-100;
+}
