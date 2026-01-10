@@ -6,6 +6,11 @@
         (delete)="deletePost($event)" (update)="updatePost($event)" (goToComments)="goToComments($event)"
             [postColor]="colorPost($index)"></app-post>
         }
+        @if(posts().length == 0){
+        <p class="text-sm text-gray-400">
+            No hay posts agregados.
+        </p>   
+        }
     </div>
 </div>
 }@else {
