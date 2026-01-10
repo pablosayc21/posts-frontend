@@ -85,8 +85,10 @@ export class PostCommentsComponent {
       next: () => {
         this.comments.set(this.comments().filter(comment => comment._id !== commentId));
         this.notificationService.success("Comentario eliminado.")
+        this.deletingComment.set(false);
       },
       error: () => {
+        this.deletingComment.set(false);
         this.notificationService.error("Error al crear comentario.")
       },
       complete: () => {

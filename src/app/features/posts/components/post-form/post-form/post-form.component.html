@@ -2,7 +2,7 @@
 
     <div class="mb-4">
         <label class="block text-xs uppercase text-gray-400 mb-1">Autor</label>
-        <input type="text" formControlName="author" placeholder="@creative_soul" class="bg-transparent font-semibold focus:outline-none" />
+        <input type="text" formControlName="author" placeholder="Escribe tu nombre..." class="bg-transparent font-semibold focus:outline-none" />
         @if (form.get('author')?.touched && form.get('author')?.invalid) {
         <p class="text-sm text-pink-600 mt-1">
             {{getFormError(form.get('author'))}}
