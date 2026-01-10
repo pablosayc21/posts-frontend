@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PostComment } from '../../models/comment.interface';
 import { LucideAngularModule } from 'lucide-angular';
+import { getFormError } from '../../../../shared/utils/form-error.helper';
 
 @Component({
   selector: 'app-comment-form',
@@ -18,6 +19,7 @@ export class CommentFormComponent implements OnChanges {
   @Input() resetOnSuccess = false;
 
   form!: FormGroup;
+  getFormError = getFormError
 
   constructor(private fb: FormBuilder) {
     this.initForm();
@@ -26,9 +28,9 @@ export class CommentFormComponent implements OnChanges {
   private initForm() {
     this.form = this.fb.group({
       postId: [this.postId, Validators.required],
-      name: ['', [Validators.required, Validators.minLength(2)]],
-      email: ['', [Validators.email, Validators.required]],
-      body: ['', [Validators.required, Validators.minLength(1)]],
+      name: [, [Validators.required, Validators.minLength(2)]],
+      email: [, [Validators.email, Validators.required]],
+      body: [, [Validators.required, Validators.minLength(1)]],
     });
   }
 

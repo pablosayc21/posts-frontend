@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angula
 import { Post } from '../../../models/post.interface';
 import { LucideAngularModule } from 'lucide-angular';
 import { Router } from '@angular/router';
+import { getFormError } from '../../../../../shared/utils/form-error.helper';
 
 
 @Component({
@@ -21,6 +22,7 @@ export class PostFormComponent implements OnChanges {
   @Output() cancel = new EventEmitter<void>();
 
   form!: FormGroup;
+  getFormError = getFormError;
 
   constructor(
     private fb: FormBuilder,
