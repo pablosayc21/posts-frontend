@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { PostsService } from '../../../services/posts.service';
 import { finalize } from 'rxjs';
 import { signal } from '@angular/core';
+import { NotificationService } from '../../../../../shared/services/notification.service';
 @Component({
   selector: 'app-posts-create',
   imports: [CommonModule, PostFormComponent],
@@ -18,7 +19,8 @@ export class PostsCreateComponent {
 
   constructor(
     private router: Router,
-    private postService: PostsService
+    private postService: PostsService,
+    private notificationService: NotificationService
   ) { }
 
 
@@ -33,11 +35,11 @@ export class PostsCreateComponent {
       )
       .subscribe({
         next: () => {
-
+          this.notificationService.success("Post creado.")
           this.router.navigate(['']);
         },
         error: () => {
-
+          this.notificationService.error("Error al crear post.")
         }
       });
   }

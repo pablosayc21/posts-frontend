@@ -5,6 +5,7 @@ import { Post } from '../../../models/post.interface';
 import { PostsService } from '../../../services/posts.service';
 import { PostFormComponent } from '../../../components/post-form/post-form/post-form.component';
 import { PageLoaderComponent } from '../../../../../shared/components/page-loader/page-loader/page-loader.component';
+import { NotificationService } from '../../../../../shared/services/notification.service';
 @Component({
   selector: 'app-posts-edit',
   imports: [PostFormComponent, PageLoaderComponent],
@@ -22,7 +23,8 @@ export class PostsEditComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private postsService: PostsService
+    private postsService: PostsService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -38,6 +40,7 @@ export class PostsEditComponent implements OnInit {
         this.loading.set(false);
       } ,
       error: () => {
+        this.notificationService.error("Error al cargar post.")
         this.router.navigate(['']);
       } 
     });
@@ -52,9 +55,10 @@ export class PostsEditComponent implements OnInit {
       .subscribe({
         next: () => {
           this.router.navigate(['']);
+          this.notificationService.success("Post actualizado.")
         } ,
         error: () => {
-
+          this.notificationService.error("Error al actualizar post.")
         }
       });
   }

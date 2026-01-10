@@ -9,6 +9,7 @@ import { CommentService } from '../../../../comments/services/comment.service';
 import { PostComment } from '../../../../comments/models/comment.interface';
 import { CommentComponent } from '../../../../comments/components/comment/comment.component';
 import { CommentFormComponent } from "../../../../comments/components/comment-form/comment-form.component";
+import { NotificationService } from '../../../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-post-comments',
@@ -32,7 +33,8 @@ export class PostCommentsComponent {
     private route: ActivatedRoute,
     private router: Router,
     private postsService: PostsService,
-    private commentsService: CommentService
+    private commentsService: CommentService,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -53,6 +55,7 @@ export class PostCommentsComponent {
         this.loaded.set(true);
       },
       error: error => {
+        this.notificationService.error("Error al cargar comentarios.")
         this.router.navigate(['']);
       },
       complete: () => {
@@ -65,11 +68,13 @@ export class PostCommentsComponent {
     this.isSubmitting.set(true);
     this.commentsService.createPost(comment).pipe(finalize(() => { this.isSubmitting.set(false) })).subscribe({
       next: () => {
+        this.notificationService.success("Comentario agregado.")
         this.comments().push(comment);
         this.resetForm.set(true);
         setTimeout(() => this.resetForm.set(false));
       },
       error: () => {
+        this.notificationService.success("Error al agregar comentario.")
       }
     });
   }
@@ -78,11 +83,11 @@ export class PostCommentsComponent {
     this.deletingComment.set(true);
     this.commentsService.deleteComment(commentId).subscribe({
       next: () => {
-        this.comments.set(
-          this.comments().filter(comment => comment._id !== commentId)
-        );
+        this.comments.set(this.comments().filter(comment => comment._id !== commentId));
+        this.notificationService.success("Comentario eliminado.")
       },
       error: () => {
+        this.notificationService.error("Error al crear comentario.")
       },
       complete: () => {
         this.deletingComment.set(false);

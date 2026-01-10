@@ -6,6 +6,7 @@ import { PostsService } from '../../services/posts.service';
 import { PageLoaderComponent } from '../../../../shared/components/page-loader/page-loader/page-loader.component';
 import { catchError, tap } from 'rxjs';
 import { Router } from '@angular/router';
+import { NotificationService } from '../../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-posts-list',
@@ -22,7 +23,8 @@ export class PostsListComponent implements OnInit {
 
   constructor(
     private postService: PostsService,
-    private router: Router
+    private router: Router,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -43,6 +45,7 @@ export class PostsListComponent implements OnInit {
       catchError(() => {
         this.posts.set([]);
         this.loaded.set(true);
+        this.notificationService.error("Error al cargar posts.")
         return [];
       })
     )
@@ -56,11 +59,11 @@ export class PostsListComponent implements OnInit {
     this.deletingPost.set(true);
     this.postService.deletePost(postId).subscribe({
       next: () => {
-        this.posts.set(
-          this.posts().filter(post => post._id !== postId)
-        );
+        this.posts.set(this.posts().filter(post => post._id !== postId));
+        this.notificationService.success("Se eliminó el post.")
       },
-      error: () => {
+      error: error => {
+        this.notificationService.error(error)
       },
       complete: () => {
         this.deletingPost.set(false);
