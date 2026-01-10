@@ -1,8 +1,8 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { importProvidersFrom } from '@angular/core';
-import { LucideAngularModule, MessageCircle } from 'lucide-angular';
-import { Plus, Pencil, Trash } from 'lucide-angular';
+import { LucideAngularModule, MessageCircle, Paperclip, Smile } from 'lucide-angular';
+import { Plus, Pencil, Trash, X, Send, Loader } from 'lucide-angular';
 
 import { routes } from './app.routes';
 
@@ -15,7 +15,12 @@ export const appConfig: ApplicationConfig = {
         Plus,
         Pencil,
         Trash,
-        MessageCircle
+        MessageCircle,
+        Paperclip,
+        Smile,
+        X,
+        Send,
+        Loader
       })
     ),
   ]

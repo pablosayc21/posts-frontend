@@ -1,0 +1,53 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="post-card-3 p-6 sm:p-8 rounded-lg max-w-3xl mx-auto">
+
+    <div class="mb-4">
+        <label class="block text-xs uppercase text-gray-400 mb-1">Autor</label>
+        <input type="text" formControlName="author" placeholder="@creative_soul" class="bg-transparent font-semibold focus:outline-none" />
+        @if (form.get('author')?.touched && form.get('author')?.invalid) {
+        <p class="text-sm text-red-600 mt-1">
+            Title is required (min 3 characters)
+        </p>
+        }
+
+    </div>
+
+    <div class="mb-6">
+        <input type="text" formControlName="title" placeholder="Agrega un titulo..."
+            class="w-full bg-transparent text-2xl font-serif placeholder-gray-400 focus:outline-none" />
+        @if (form.get('title')?.touched && form.get('title')?.invalid) {
+        <p class="text-sm text-red-600 mt-1">
+            Title is required (min 3 characters)
+        </p>
+        }
+    </div>
+
+
+    <div class="mb-10">
+        <textarea rows="4" formControlName="body" placeholder="Escribe tu pensamiento..."
+            class="w-full bg-transparent italic text-gray-700 placeholder-gray-400 resize-none focus:outline-none"></textarea>
+        @if (form.get('body')?.touched && form.get('body')?.invalid) {
+        <p class="text-sm text-red-600 mt-1">
+            Contenido requerido (min 10 characters)
+        </p>
+        }
+    </div>
+
+    <div class="flex items-center justify-end pt-4 border-t border-yellow-200">
+        <div class="flex items-center gap-4">
+            <button type="button" (click)="cancel.emit()"
+                class="flex items-center gap-2 px-4 py-2 rounded-md bg-pink-200">
+                <lucide-icon name="x" size="16"></lucide-icon> Cancel
+            </button>
+            <button type="submit" [disabled]="form.invalid || isSubmitting"
+                class="px-5 py-2 rounded-md bg-green-200 font-semibold disabled:opacity-50 flex items-center gap-2">
+                @if (isSubmitting) {
+                <lucide-icon name="loader" size="16" class="animate-spin"></lucide-icon>
+                Publicando...
+                } @else {
+                <lucide-icon name="send" size="16"></lucide-icon>
+                Publicar nota
+                }
+            </button>
+        </div>
+    </div>
+</form>

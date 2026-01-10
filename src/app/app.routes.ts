@@ -13,7 +13,17 @@ export const routes: Routes = [
                 data: {
                     showCreateButton: true,
                 }
+            },
+            {
+                path: 'posts/new',
+                loadComponent: () =>
+                    import('./features/posts/pages/posts-create/posts-create/posts-create.component')
+                        .then(m => m.PostsCreateComponent),
+                data: {
+                    showCreateButton: false,
+                }
             }
-        ],
-    },
+        ]
+    }
+
 ];

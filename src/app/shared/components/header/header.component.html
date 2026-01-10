@@ -2,7 +2,7 @@
     <div
         class="mx-auto w-full max-w-7xl px-4 sm:px-6 py-3 sm:py-4 flex flex-col md:flex-row gap-4 md:gap-0 md:items-center md:justify-between">
 
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-3" (click)="goToList()">
             <div class="w-8 h-8 flex items-center justify-center rounded-lg bg-gray-100">
                 <svg class="w-5 h-5 text-gray-800" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M4 3h16v18l-8-4-8 4V3z" />
@@ -27,9 +27,9 @@
             </div>
         </div>
 
-        @if (showCreateButton) {
+        @if (showCreateButton()) {
         <div class="w-full md:w-auto">
-            <button type="button"
+            <button type="button" (click)="goToCreatePost()"
                 class="w-full md:w-auto px-5 py-2 rounded-full bg-gray-900 text-white font-medium hover:bg-gray-800 transition">
                 Agregar nota
             </button>
