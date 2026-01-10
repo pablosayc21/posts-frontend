@@ -1,1 +1,46 @@
-<p>comment-form works!</p>
+<form [formGroup]="form" (ngSubmit)="onSubmit()"
+    class="mt-8 p-4 rounded-lg border border-gray-400 border-dotted  bg-white space-y-4">
+    <h3 class="text-lg font-semibold text-gray-800">
+        Agregar comentario
+    </h3>
+    <div>
+        <input type="text" formControlName="name" placeholder="Tu nombre" class="w-full px-4 py-2 border rounded-md" />
+        @if (form.get('name')?.touched && form.get('name')?.invalid) {
+        <p class="text-sm text-red-600 mt-1">
+            Title is required (min 3 characters)
+        </p>
+        }
+    </div>
+    <div>
+        <input type="email" formControlName="email" placeholder="Email (opcional)"
+            class="w-full px-4 py-2 border rounded-md" />
+        @if (form.get('email')?.touched && form.get('email')?.invalid) {
+        <p class="text-sm text-red-600 mt-1">
+            Title is required (min 3 characters)
+        </p>
+        }
+    </div>
+    <div>
+        <textarea rows="3" formControlName="body" placeholder="Escribe tu comentario..."
+            class="w-full px-4 py-2 border rounded-md resize-none"></textarea>
+        @if (form.get('body')?.touched && form.get('body')?.invalid) {
+        <p class="text-sm text-red-600 mt-1">
+            Title is required (min 3 characters)
+        </p>
+        }
+    </div>
+    <div class="flex justify-end gap-3 pt-2">
+        <button type="submit" [disabled]="form.invalid || isSubmitting"
+            class="px-5 py-2 rounded-md bg-green-200 font-semibold disabled:opacity-50 flex items-center gap-2">
+            @if (isSubmitting) {
+            <lucide-icon name="loader" size="16" class="animate-spin"></lucide-icon>
+            Comentando...
+            } @else {
+            <lucide-icon name="send" size="16"></lucide-icon>
+            Comentar
+            }
+        </button>
+    </div>
+    
+
+</form>

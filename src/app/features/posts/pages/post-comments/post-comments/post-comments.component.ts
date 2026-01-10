@@ -4,14 +4,15 @@ import { PostsService } from '../../../services/posts.service';
 import { PageLoaderComponent } from '../../../../../shared/components/page-loader/page-loader/page-loader.component';
 import { Post } from '../../../models/post.interface';
 import { ActivatedRoute, Router } from '@angular/router';
-import { forkJoin } from 'rxjs';
+import { finalize, forkJoin } from 'rxjs';
 import { CommentService } from '../../../../comments/services/comment.service';
 import { PostComment } from '../../../../comments/models/comment.interface';
 import { CommentComponent } from '../../../../comments/components/comment/comment.component';
+import { CommentFormComponent } from "../../../../comments/components/comment-form/comment-form.component";
 
 @Component({
   selector: 'app-post-comments',
-  imports: [PostComponent, PageLoaderComponent, CommentComponent],
+  imports: [PostComponent, PageLoaderComponent, CommentComponent, CommentFormComponent],
   templateUrl: './post-comments.component.html',
   styleUrl: './post-comments.component.scss'
 })
@@ -21,6 +22,8 @@ export class PostCommentsComponent {
   comments = signal<PostComment[]>([]);
   loading = signal(true);
   loaded = signal(false);
+  isSubmitting = signal(false);
+  resetForm = signal(false);
 
   private postId!: string;
 
@@ -29,14 +32,14 @@ export class PostCommentsComponent {
     private router: Router,
     private postsService: PostsService,
     private commentsService: CommentService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.postId = this.route.snapshot.paramMap.get('id')!;
     this.loadData();
   }
 
-  loadData(){
+  loadData() {
     this.loading.set(true);
 
     forkJoin({
@@ -49,8 +52,6 @@ export class PostCommentsComponent {
         this.loaded.set(true);
       },
       error: error => {
-        console.log("Error")
-        console.log(error)
         this.router.navigate(['']);
       },
       complete: () => {
@@ -59,4 +60,18 @@ export class PostCommentsComponent {
     });
   }
 
+  createComment(comment: PostComment) {
+    this.isSubmitting.set(true);
+    this.commentsService.createPost(comment).pipe(finalize(() => { this.isSubmitting.set(false) })).subscribe({
+      next: () => {
+        this.comments().push(comment);
+        this.resetForm.set(true);
+        setTimeout(() => this.resetForm.set(false));
+      },
+      error: () => {
+      }
+    });
+  }
+
 }
+

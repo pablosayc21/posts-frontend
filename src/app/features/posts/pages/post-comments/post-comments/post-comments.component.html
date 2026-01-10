@@ -14,10 +14,13 @@
                 No hay comentarios para este post
             </p>
             }
-            @for (comment of comments(); track comment._id) {
-            <app-comment [comment]="comment"></app-comment>
-            }
+            <div class="flex flex-col gap-2">
+                @for (comment of comments(); track comment._id) {
+                <app-comment [comment]="comment"></app-comment>
+                }
+            </div>
         </div>
+        <app-comment-form [postId]="post()!._id" [isSubmitting]="isSubmitting()" [resetOnSuccess]="resetForm()" (submitForm)="createComment($event)" class="w-full max-w-xl sm:max-w-2xl lg:max-w-3xl"> </app-comment-form>
     </div>
 </div>
 }@else {

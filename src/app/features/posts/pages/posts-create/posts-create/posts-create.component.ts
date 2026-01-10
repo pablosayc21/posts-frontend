@@ -14,12 +14,13 @@ import { signal } from '@angular/core';
 })
 export class PostsCreateComponent {
 
+  isSubmitting = signal<boolean>(false);
+
   constructor(
     private router: Router,
     private postService: PostsService
   ) { }
 
-  isSubmitting = signal<boolean>(false);
 
   createPost(post: Post) {
     this.isSubmitting.set(true);
