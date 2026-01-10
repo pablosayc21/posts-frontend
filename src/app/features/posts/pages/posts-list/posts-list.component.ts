@@ -5,6 +5,7 @@ import { PostComponent } from '../../components/post/post.component';
 import { PostsService } from '../../services/posts.service';
 import { PageLoaderComponent } from '../../../../shared/components/page-loader/page-loader/page-loader.component';
 import { catchError, tap } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-posts-list',
@@ -19,7 +20,10 @@ export class PostsListComponent implements OnInit {
   loaded = signal<boolean>(false);
   deletingPost = signal<boolean>(false);
 
-  constructor(private postService: PostsService) { }
+  constructor(
+    private postService: PostsService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.loadData();
@@ -62,6 +66,10 @@ export class PostsListComponent implements OnInit {
         this.deletingPost.set(false);
       }
     });
+  }
+
+  updatePost(postId: string){
+    this.router.navigate(['posts', 'edit', postId])
   }
 
   colorPost(index: number) {

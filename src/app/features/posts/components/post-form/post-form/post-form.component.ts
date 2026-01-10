@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   templateUrl: './post-form.component.html',
   styleUrl: './post-form.component.scss'
 })
-export class PostFormComponent implements OnInit, OnChanges {
+export class PostFormComponent implements OnChanges {
 
   @Input() post: Post | null = null;
   @Input() isSubmitting = false;
@@ -25,7 +25,9 @@ export class PostFormComponent implements OnInit, OnChanges {
   constructor(
     private fb: FormBuilder,
     private router: Router
-  ) { }
+  ) {
+    this.initForm()
+  }
 
   initForm() {
     this.form = this.fb.group({
@@ -35,13 +37,9 @@ export class PostFormComponent implements OnInit, OnChanges {
     });
   }
 
-  ngOnInit(): void {
-    this.initForm();
-  }
-
-  ngOnChanges(): void {
-    if (this.post && this.form) {
-      this.form.patchValue(this.post);
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['post']) {
+      this.form.patchValue(changes['post'].currentValue);
     }
   }
 
@@ -50,10 +48,10 @@ export class PostFormComponent implements OnInit, OnChanges {
       this.form.markAllAsTouched();
       return;
     }
-    this.submitForm.emit({...this.form.value} as Post);
+    this.submitForm.emit({ ...this.form.value } as Post);
   }
 
-  returnToList(){
+  returnToList() {
 
   }
 

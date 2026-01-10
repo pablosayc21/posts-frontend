@@ -63,4 +63,23 @@ export class PostsService extends BaseApiService {
     );
   }
 
+  updatePost(postId: string, payload: Post): Observable<Post> {
+    const body = {
+      title: payload.title,
+      body: payload.body,
+      author: payload.author,
+    };
+
+    return this.put<Post>(`${this.prefix}/${postId}`, body).pipe(
+      switchMap(res => {
+        if (!res.success) {
+          return throwError(() => res.message);
+        }
+        return [res.data!];
+      }),
+      tap(),
+      catchError(err => throwError(() => err))
+    );
+  }
+
 }
