@@ -2,10 +2,13 @@ import { Component, computed, OnInit, signal } from '@angular/core';
 import { Post } from '../../models/post.interface';
 import { CommonModule } from '@angular/common';
 import { PostComponent } from '../../components/post/post.component';
+import { PostsService } from '../../services/posts.service';
+import { PageLoaderComponent } from '../../../../shared/components/page-loader/page-loader/page-loader.component';
+import { catchError, tap } from 'rxjs';
 
 @Component({
   selector: 'app-posts-list',
-  imports: [CommonModule, PostComponent],
+  imports: [CommonModule, PostComponent, PageLoaderComponent],
   templateUrl: './posts-list.component.html',
   styleUrl: './posts-list.component.scss'
 })
@@ -15,48 +18,33 @@ export class PostsListComponent implements OnInit {
   loading = signal<boolean>(true);
   loaded = signal<boolean>(false);
 
-  constructor(){}
+  constructor(private postService: PostsService) { }
 
   ngOnInit(): void {
     this.loadData();
   }
 
-  private loadData(){
+  private loadData() {
+    this.loadPosts();
+  }
+
+  loadPosts() {
     this.loading.set(true);
     this.loaded.set(false);
-    setTimeout(() => {
-      this.posts.set([
-        {
-          _id: '1',
-          title: 'Primer Post',
-          body: 'Contenido del primer post de prueba',
-          author: 'Juan Pérez',
-          createdAt: '2024-01-01',
-          updatedAt: '2024-01-01',
-        },
-        {
-          _id: '2',
-          title: 'Angular Signals',
-          body: 'Aprendiendo signals en Angular 18',
-          author: 'María López',
-          createdAt: '2024-01-02',
-          updatedAt: '2024-01-02',
-        },
-        {
-          _id: '3',
-          title: 'NestJS + MongoDB',
-          body: 'Backend limpio con NestJS',
-          author: 'Carlos Gómez',
-          createdAt: '2024-01-03',
-          updatedAt: '2024-01-03',
-        }
-      ],
-    );
-    
-    this.loading.set(false);
-    }, 500);
-    this.loading.set(false);
-    this.loaded.set(true);
+    this.postService.getPosts().pipe(
+      tap(() => {
+        this.loaded.set(true);
+      }),
+      catchError(() => {
+        this.posts.set([]);
+        this.loaded.set(true);
+        return [];
+      })
+    )
+      .subscribe(posts => {
+        this.posts.set(posts);
+        this.loading.set(false);
+      });
   }
 
   colorPost(index: number) {
