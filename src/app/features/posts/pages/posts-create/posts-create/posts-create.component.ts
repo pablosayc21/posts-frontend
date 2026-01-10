@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { PostFormComponent } from '../../../components/post-form/post-form/post-form.component';
 import { Post } from '../../../models/post.interface';
 import { Router } from '@angular/router';
+import { PostsService } from '../../../services/posts.service';
+import { finalize } from 'rxjs';
 @Component({
   selector: 'app-posts-create',
   imports: [CommonModule, PostFormComponent],
@@ -11,19 +13,34 @@ import { Router } from '@angular/router';
 })
 export class PostsCreateComponent {
 
-  constructor(private router: Router){}
+  constructor(
+    private router: Router,
+    private postService: PostsService
+  ) { }
 
   isSubmitting = false;
 
   createPost(post: Post) {
     this.isSubmitting = true;
-    setTimeout(() => {
-      console.log('POST CREATED:', post);
-      this.isSubmitting = false;
-    }, 1000);
+
+    this.postService.createPost(post)
+      .pipe(
+        finalize(() => {
+          this.isSubmitting = false;
+        })
+      )
+      .subscribe({
+        next: () => {
+
+          this.router.navigate(['']);
+        },
+        error: () => {
+
+        }
+      });
   }
 
-  returnToList(){
+  returnToList() {
     this.router.navigate(['']);
   }
 
