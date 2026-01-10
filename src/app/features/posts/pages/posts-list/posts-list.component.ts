@@ -17,6 +17,7 @@ export class PostsListComponent implements OnInit {
   posts = signal<Post[]>([]);
   loading = signal<boolean>(true);
   loaded = signal<boolean>(false);
+  deletingPost = signal<boolean>(false);
 
   constructor(private postService: PostsService) { }
 
@@ -45,6 +46,22 @@ export class PostsListComponent implements OnInit {
         this.posts.set(posts);
         this.loading.set(false);
       });
+  }
+
+  deletePost(postId: string) {
+    this.deletingPost.set(true);
+    this.postService.deletePost(postId).subscribe({
+      next: () => {
+        this.posts.set(
+          this.posts().filter(post => post._id !== postId)
+        );
+      },
+      error: () => {
+      },
+      complete: () => {
+        this.deletingPost.set(false);
+      }
+    });
   }
 
   colorPost(index: number) {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Input } from '@angular/core';
 import { Post } from '../../models/post.interface';
 import { CommonModule } from '@angular/common';
@@ -16,6 +16,12 @@ export class PostComponent {
   
   @Input({ required: true }) post!: Post;
   @Input({required: true}) postColor: PostColor = 'teal';
+  @Input() deleting:boolean = false;
+  @Output() delete = new EventEmitter<string>();
+
+  onDelete() {
+    this.delete.emit(this.post._id);
+  }
 
 }
 

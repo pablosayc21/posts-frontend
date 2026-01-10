@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, switchMap, throwError, tap, catchError } from 'rxjs';
+import { Observable, switchMap, throwError, tap, catchError, map } from 'rxjs';
 import { Post } from '../models/post.interface';
 import { BaseApiService } from '../../../core/services/base-api.service';
 
@@ -47,6 +47,19 @@ export class PostsService extends BaseApiService {
         }
         return [res.data];
       })
+    );
+  }
+
+  deletePost(postId: string): Observable<void> {
+    return this.delete<Post>(`${this.prefix}/${postId}`).pipe(
+      map(res => {
+        if (!res.success) {
+          throw res.message;
+        }
+        return;
+      }),
+      tap(),
+      catchError(err => throwError(() => err))
     );
   }
 
