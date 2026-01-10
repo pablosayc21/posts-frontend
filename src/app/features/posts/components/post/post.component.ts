@@ -20,6 +20,8 @@ export class PostComponent {
   @Input() deleting:boolean = false;
   @Output() delete = new EventEmitter<string>();
   @Output() update = new EventEmitter<string>();
+  @Output() goToComments = new EventEmitter<string>();
+  @Input() showActions:boolean = true;
 
   constructor(private router: Router){}
 

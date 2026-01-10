@@ -30,7 +30,16 @@ export const routes: Routes = [
                     import('./features/posts/pages/posts-edit/posts-edit/posts-edit.component')
                         .then(m => m.PostsEditComponent),
                 data: {
-                    showCreateButton: false,
+                    showCreateButton: true,
+                }
+            },
+            {
+                path: 'posts/comments/:id',
+                loadComponent: () =>
+                    import('./features/posts/pages/post-comments/post-comments/post-comments.component')
+                        .then(m => m.PostCommentsComponent),
+                data: {
+                    showCreateButton: true,
                 }
             }
         ]

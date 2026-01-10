@@ -77,4 +77,8 @@ export class PostsListComponent implements OnInit {
     return colors[index % colors.length];
   }
 
+  goToComments(postId: string){
+    this.router.navigate(['posts', 'comments', postId])
+  }
+
 }
