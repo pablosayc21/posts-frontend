@@ -4,10 +4,11 @@ import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angula
 import { PostComment } from '../../models/comment.interface';
 import { LucideAngularModule } from 'lucide-angular';
 import { getFormError } from '../../../../shared/utils/form-error.helper';
+import { CommentDirective } from '../../../../shared/directives/form/comment.directive';
 
 @Component({
   selector: 'app-comment-form',
-  imports: [CommonModule, ReactiveFormsModule, LucideAngularModule],
+  imports: [CommonModule, ReactiveFormsModule, LucideAngularModule, CommentDirective],
   templateUrl: './comment-form.component.html',
   styleUrl: './comment-form.component.scss'
 })
