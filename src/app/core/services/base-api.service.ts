@@ -3,13 +3,14 @@ import { inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, delay, retry, tap, catchError, throwError } from 'rxjs';
 import { ApiResponse } from '../models/api-response.interface';
+import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class BaseApiService {
 
   protected http = inject(HttpClient);
-  protected baseUrl = 'http://127.0.0.1:3000'
+  protected baseUrl = environment.apiUrl;
 
   constructor() { }
 
