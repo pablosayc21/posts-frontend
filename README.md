@@ -20,7 +20,7 @@ npm start
 
 ## Ejecución
 
-Ejecuta `ng serve` para un servidor de desarrollo. Entra `http://localhost:4200/`. La aplicación se recargará automáticamente si hay algún cambio en los archivos.
+Ejecuta `ng serve` para un servidor de desarrollo. Entra `http://localhost:4200/`. La aplicación se recargará automáticamente si hay algún cambio en los archivos. El backend de la aplicación para consumir datos es el siguiente:  https://github.com/pablosayc21/posts-backend.git.
 
 ## Incluye
 
