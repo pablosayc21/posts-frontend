@@ -15,6 +15,9 @@
             No hay posts.
         </p>   
         }
+        @if(filteredPosts().length > 0) {
+        <app-paginator [currentPage]="currentPage()" [totalPages]="2"></app-paginator>
+        }
     </div>
 </div>
 }@else {

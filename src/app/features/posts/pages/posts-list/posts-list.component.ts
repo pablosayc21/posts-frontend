@@ -8,10 +8,11 @@ import { catchError, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { NotificationService } from '../../../../shared/services/notification.service';
 import { SearchBarComponent } from "../../../../shared/components/search-bar/search-bar.component";
+import { PaginatorComponent } from '../../../../shared/components/paginator/paginator.component';
 
 @Component({
   selector: 'app-posts-list',
-  imports: [CommonModule, PostComponent, PageLoaderComponent, SearchBarComponent],
+  imports: [CommonModule, PostComponent, PageLoaderComponent, SearchBarComponent, PaginatorComponent],
   templateUrl: './posts-list.component.html',
   styleUrl: './posts-list.component.scss'
 })
@@ -22,6 +23,7 @@ export class PostsListComponent implements OnInit {
   loaded = signal<boolean>(false);
   deletingPost = signal<boolean>(false);
   filteredPosts = signal<Post[]>([]);
+  currentPage = signal<number>(1);
 
   constructor(
     private postService: PostsService,
