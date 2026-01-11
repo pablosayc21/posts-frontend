@@ -1,7 +1,7 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { importProvidersFrom } from '@angular/core';
-import { LucideAngularModule, MessageCircle, Paperclip, Smile } from 'lucide-angular';
+import { Dot, LucideAngularModule, MessageCircle, Paperclip, Search, Smile } from 'lucide-angular';
 import { Plus, Pencil, Trash, X, Send, Loader } from 'lucide-angular';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideToastr } from 'ngx-toastr';
@@ -33,7 +33,8 @@ export const appConfig: ApplicationConfig = {
         Smile,
         X,
         Send,
-        Loader
+        Loader,
+        Search
       })
     ),
   ]

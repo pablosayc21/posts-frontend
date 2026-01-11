@@ -7,10 +7,11 @@ import { PageLoaderComponent } from '../../../../shared/components/page-loader/p
 import { catchError, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { NotificationService } from '../../../../shared/services/notification.service';
+import { SearchBarComponent } from "../../../../shared/components/search-bar/search-bar.component";
 
 @Component({
   selector: 'app-posts-list',
-  imports: [CommonModule, PostComponent, PageLoaderComponent],
+  imports: [CommonModule, PostComponent, PageLoaderComponent, SearchBarComponent],
   templateUrl: './posts-list.component.html',
   styleUrl: './posts-list.component.scss'
 })
@@ -20,6 +21,7 @@ export class PostsListComponent implements OnInit {
   loading = signal<boolean>(true);
   loaded = signal<boolean>(false);
   deletingPost = signal<boolean>(false);
+  filteredPosts = signal<Post[]>([]);
 
   constructor(
     private postService: PostsService,
@@ -51,6 +53,7 @@ export class PostsListComponent implements OnInit {
     )
       .subscribe(posts => {
         this.posts.set(posts);
+        this.filteredPosts.set(posts);
         this.loading.set(false);
       });
   }
@@ -59,6 +62,7 @@ export class PostsListComponent implements OnInit {
     this.deletingPost.set(true);
     this.postService.deletePost(postId).subscribe({
       next: () => {
+        this.filteredPosts.set(this.posts().filter(post => post._id !== postId));
         this.posts.set(this.posts().filter(post => post._id !== postId));
         this.notificationService.success("Se eliminó el post.")
       },
@@ -82,6 +86,15 @@ export class PostsListComponent implements OnInit {
 
   goToComments(postId: string){
     this.router.navigate(['posts', 'comments', postId])
+  }
+
+
+  searchPost(title: string | null) {
+    if(!title) {
+      this.filteredPosts.set(this.posts());
+    } else {
+      this.filteredPosts.set(this.posts().filter(p => p.title.toLowerCase().includes(title.toLowerCase())));
+    }
   }
 
 }

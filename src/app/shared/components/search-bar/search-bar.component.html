@@ -1,0 +1,11 @@
+<div class="w-full md:flex-1 md:flex md:justify-center">
+    <div class="relative w-full md:max-w-md">
+        <input type="text" placeholder="Buscar titulo..." [(ngModel)]="value" (input)="emitSearchValue()"
+        class="w-full pl-10 pr-4 py-2 rounded-full
+        bg-gray-100 text-gray-700 placeholder-gray-400
+        focus:outline-none focus:ring-2 focus:ring-gray-300" />
+        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+            <lucide-icon name="search" class="w-5 h-5" />
+        </span>
+    </div>
+</div>

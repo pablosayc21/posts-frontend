@@ -3,12 +3,16 @@
     'post-card-2': postColor === 'green',
     'post-card-3': postColor === 'yellow'
   }">
-    <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-gray-700 font-semibold my-2">
+    <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-gray-400 font-semibold my-2">
         <span>{{ post.author }}</span>
-        <span class="text-gray-400 text-xs sm:text-sm font-normal">
+        <span class=" text-xs sm:text-sm font-normal">
             {{ post.createdAt | formatoFecha }}
             @if(post.updatedAt) { - {{ post.updatedAt | formatoFecha }} }
         </span>
+    </div>
+
+    <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-gray-700 font-extrabold my-2">
+        <span>{{ post.title }}</span>
     </div>
 
     <div

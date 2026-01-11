@@ -1,14 +1,18 @@
 @if (!loading()) {
 <div class="w-full flex justify-center mt-6 sm:mt-10">
+    <div></div>
     <div class="w-full flex flex-col items-center gap-8 px-4 sm:px-6">
-        @for (post of posts(); track $index) {
+        <div class="w-full max-w-xl sm:max-w-2xl lg:max-w-3xl">
+            <app-search-bar (searchValue)="searchPost($event)"></app-search-bar>
+        </div>
+        @for (post of filteredPosts(); track $index) {
         <app-post class="w-full max-w-xl sm:max-w-2xl lg:max-w-3xl" [post]="post" [deleting]="deletingPost()" 
         (delete)="deletePost($event)" (update)="updatePost($event)" (goToComments)="goToComments($event)"
             [postColor]="colorPost($index)"></app-post>
         }
-        @if(posts().length == 0){
+        @if(filteredPosts().length == 0){
         <p class="text-sm text-gray-400">
-            No hay posts agregados.
+            No hay posts.
         </p>   
         }
     </div>
