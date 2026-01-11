@@ -8,7 +8,9 @@ import { HttpParams } from '@angular/common/http';
   providedIn: 'root'
 })
 export class CommentService extends BaseApiService {
-  prefix: string = '/comments'
+
+  readonly prefix = '/comments'
+
   constructor() {
     super();
   }
@@ -16,43 +18,36 @@ export class CommentService extends BaseApiService {
   getByPostId(postId: string): Observable<PostComment[]> {
     const params = new HttpParams().set('postId', postId);
     return this.getList<PostComment[]>(this.prefix, params).pipe(
-      switchMap(res => {
+      map(res => {
         if (!res.success) {
-          return throwError(() => res.message);
+          throw res.message;
         }
-        return [res.data ?? []];
-      }),
-      tap(),
-      catchError(err => throwError(() => err))
-    );
-  }
-  
-  createPost(post: PostComment): Observable<PostComment> {
-    return this.post<PostComment>(this.prefix, post).pipe(
-      switchMap(res => {
-        if (!res.success) {
-          return throwError(() => res.message);
-        }
-        return [res.data!];
-      }),
-      tap(),
-      catchError(err => throwError(() => err))
+        return res.data ?? [];
+      })
     );
   }
 
-  deleteComment(postId: string): Observable<void> {
-      return this.delete<PostComment>(`${this.prefix}/${postId}`).pipe(
-        map(res => {
-          if (!res.success) {
-            throw res.message;
-          }
-          return;
-        }),
-        tap(),
-        catchError(err => throwError(() => err))
-      );
-    }
-  
+  createPost(comment: PostComment): Observable<PostComment> {
+    return this.post<PostComment>(this.prefix, comment).pipe(
+      map(res => {
+        if (!res.success || !res.data) {
+          throw res.message;
+        }
+        return res.data;
+      })
+    );
+  }
+
+  deleteComment(commentId: string): Observable<void> {
+    return this.delete<void>(`${this.prefix}/${commentId}`).pipe(
+      map(res => {
+        if (!res.success) {
+          throw res.message;
+        }
+        return;
+      })
+    );
+  }
 
 
 }

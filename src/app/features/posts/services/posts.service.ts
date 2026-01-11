@@ -8,58 +8,53 @@ import { BaseApiService } from '../../../core/services/base-api.service';
 })
 export class PostsService extends BaseApiService {
 
-  prefix: string = '/posts'
+  readonly prefix = '/posts';
+
   constructor() {
     super();
   }
 
   getPosts(): Observable<Post[]> {
     return this.get<Post[]>(this.prefix).pipe(
-      switchMap(res => {
+      map(res => {
         if (!res.success) {
-          return throwError(() => res.message);
+          throw res.message;
         }
-        return [res.data ?? []];
-      }),
-      tap(),
-      catchError(err => throwError(() => err))
+        return res.data ?? [];
+      })
     );
   }
 
   createPost(post: Post): Observable<Post> {
     return this.post<Post>(this.prefix, post).pipe(
-      switchMap(res => {
-        if (!res.success) {
-          return throwError(() => res.message);
+      map(res => {
+        if (!res.success || !res.data) {
+          throw res.message;
         }
-        return [res.data!];
-      }),
-      tap(),
-      catchError(err => throwError(() => err))
+        return res.data;
+      })
     );
   }
 
   getPostById(id: string): Observable<Post> {
     return this.get<Post>(`${this.prefix}/${id}`).pipe(
-      switchMap(res => {
+      map(res => {
         if (!res.success || !res.data) {
-          return throwError(() => res.message);
+          throw res.message;
         }
-        return [res.data];
+        return res.data;
       })
     );
   }
 
   deletePost(postId: string): Observable<void> {
-    return this.delete<Post>(`${this.prefix}/${postId}`).pipe(
+    return this.delete<void>(`${this.prefix}/${postId}`).pipe(
       map(res => {
         if (!res.success) {
           throw res.message;
         }
         return;
-      }),
-      tap(),
-      catchError(err => throwError(() => err))
+      })
     );
   }
 
@@ -71,14 +66,12 @@ export class PostsService extends BaseApiService {
     };
 
     return this.put<Post>(`${this.prefix}/${postId}`, body).pipe(
-      switchMap(res => {
-        if (!res.success) {
-          return throwError(() => res.message);
+      map(res => {
+        if (!res.success || !res.data) {
+          throw res.message;
         }
-        return [res.data!];
-      }),
-      tap(),
-      catchError(err => throwError(() => err))
+        return res.data;
+      })
     );
   }
 
