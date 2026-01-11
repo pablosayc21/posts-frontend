@@ -5,11 +5,12 @@ import { Post } from '../../../models/post.interface';
 import { LucideAngularModule } from 'lucide-angular';
 import { Router } from '@angular/router';
 import { getFormError } from '../../../../../shared/utils/form-error.helper';
+import { PostDirective } from '../../../../../shared/directives/form/post.directive';
 
 
 @Component({
   selector: 'app-post-form',
-  imports: [CommonModule, ReactiveFormsModule, LucideAngularModule],
+  imports: [CommonModule, ReactiveFormsModule, LucideAngularModule, PostDirective],
   templateUrl: './post-form.component.html',
   styleUrl: './post-form.component.scss'
 })
