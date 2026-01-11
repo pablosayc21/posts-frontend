@@ -67,9 +67,9 @@ export class PostCommentsComponent {
   createComment(comment: PostComment) {
     this.isSubmitting.set(true);
     this.commentsService.createPost(comment).pipe(finalize(() => { this.isSubmitting.set(false) })).subscribe({
-      next: () => {
+      next: (result) => {
         this.notificationService.success("Comentario agregado.")
-        this.comments().push(comment);
+        this.comments().push(result);
         this.resetForm.set(true);
         setTimeout(() => this.resetForm.set(false));
       },
