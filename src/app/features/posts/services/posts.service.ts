@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, switchMap, throwError, tap, catchError, map } from 'rxjs';
 import { Post } from '../models/post.interface';
 import { BaseApiService } from '../../../core/services/base-api.service';
+import { PaginatedResponse } from '../../../core/models/paginated-response.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,17 @@ export class PostsService extends BaseApiService {
           throw res.message;
         }
         return res.data ?? [];
+      })
+    );
+  }
+
+  getPgPosts(page: number, limit: number): Observable<PaginatedResponse<Post>> {
+    return this.getPaginated<Post>(this.prefix, page, limit).pipe(
+      map(res => {
+        if (!res.success || !res.data) {
+          throw res.message;
+        }
+        return res.data;
       })
     );
   }

@@ -18,12 +18,15 @@ import { PaginatorComponent } from '../../../../shared/components/paginator/pagi
 })
 export class PostsListComponent implements OnInit {
 
+  readonly pageLimit = 5
   posts = signal<Post[]>([]);
   loading = signal<boolean>(true);
   loaded = signal<boolean>(false);
   deletingPost = signal<boolean>(false);
   filteredPosts = signal<Post[]>([]);
   currentPage = signal<number>(1);
+  currentSearchValue = signal<string | null>(null);
+  totalPages = signal<number>(0);
 
   constructor(
     private postService: PostsService,
@@ -36,7 +39,27 @@ export class PostsListComponent implements OnInit {
   }
 
   private loadData() {
-    this.loadPosts();
+    this.loadPgPosts();
+  }
+ 
+  loadPgPosts(page: number = 1){
+    this.loading.set(true);
+    this.postService.getPgPosts(page, this.pageLimit).pipe(
+      catchError(() => {
+        this.posts.set([]);
+        this.filteredPosts.set([]);
+        this.loaded.set(true);
+        this.notificationService.error("Error al cargar posts.")
+        return [];
+      })
+    ).subscribe(paged => {
+      this.posts.set(paged.data);
+      this.filteredPosts.set(paged.data);
+      this.totalPages.set(paged.totalPages);
+      this.currentPage.set(paged.page)
+      if(this.currentSearchValue() != null) this.searchPost(this.currentSearchValue())
+      this.loading.set(false);
+    });
   }
 
   loadPosts() {
@@ -48,6 +71,7 @@ export class PostsListComponent implements OnInit {
       }),
       catchError(() => {
         this.posts.set([]);
+        this.filteredPosts.set([]);
         this.loaded.set(true);
         this.notificationService.error("Error al cargar posts.")
         return [];
@@ -92,6 +116,7 @@ export class PostsListComponent implements OnInit {
 
 
   searchPost(title: string | null) {
+    this.currentSearchValue.set(title);
     if(!title) {
       this.filteredPosts.set(this.posts());
     } else {

@@ -4,6 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, delay, retry, tap, catchError, throwError } from 'rxjs';
 import { ApiResponse } from '../models/api-response.interface';
 import { environment } from '../../../environments/environment';
+import { PaginatedResponse } from '../models/paginated-response.interface';
 @Injectable({
   providedIn: 'root'
 })
@@ -58,5 +59,17 @@ export class BaseApiService {
       catchError(error => throwError(() => error))
     );
   }
-  
+
+  protected getPaginated<T>(url: string, page: number,limit: number): Observable<ApiResponse<PaginatedResponse<T>>> {
+    let httpParams = new HttpParams()
+      .set('page', page)
+      .set('limit', limit);
+
+    return this.http.get<ApiResponse<PaginatedResponse<T>>>(`${this.baseUrl}${url}/pg`, { params: httpParams, }).pipe(
+      delay(500),
+      retry(1),
+      catchError(error => throwError(() => error))
+    );
+  }
+
 }
